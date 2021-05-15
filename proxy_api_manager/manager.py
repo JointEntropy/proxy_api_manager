@@ -12,9 +12,11 @@ class ProxyManager:
         api_class = PROXY_API_CHOICE[proxies_config['api_class']]
         api_params = proxies_config.get('api_settings', {})
         self.api = api_class(**api_params)
+        self.last_fetched_ = None
 
     def get_proxies_list(self):
-        return list(self.api.get_ipv4_proxies())
+        self.last_fetched_ = list(self.api.get_ipv4_proxies())
+        return self.last_fetched_
 
     @staticmethod
     def list_aval_apis():
