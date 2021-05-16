@@ -17,13 +17,13 @@ class Proxy6API:
     def __init__(self, API_KEY):
         self.API_KEY = API_KEY
 
-    def get_ipv4_proxies(self):
-        return self.get_proxies(filter_entry=self.is_ipv4)
+    def get_ipv4_proxies(self, *args, **kwargs):
+        return self.get_proxies(*args, filter_entry=self.is_ipv4,  **kwargs)
 
-    def get_ipv6_proxies(self):
-        return self.get_proxies(filter_entry=self.is_ipv6)
+    def get_ipv6_proxies(self, *args, **kwargs):
+        return self.get_proxies(*args, filter_entry=self.is_ipv6,  **kwargs)
 
-    def get_proxies(self, filter_entry=None):
+    def get_proxies(self, filter_entry=None, to_str=True):
         method = 'getproxy'
         url = f'{self.base_url}/api/{self.API_KEY}/{method}'
         response = requests.get(url,
@@ -38,7 +38,10 @@ class Proxy6API:
         for proxy_info_entry in proxies_json['list'].values():
             if not filter_entry(proxy_info_entry):
                 continue
-            yield self.get_ip_string(proxy_info_entry)
+            if to_str:
+                yield self.get_ip_string(proxy_info_entry)
+            else:
+                yield proxy_info_entry
 
     @staticmethod
     def is_ipv4(proxy_info_entry):

@@ -1,4 +1,4 @@
-from .proxy6api import Proxy6API
+from proxy_api_manager.proxy6api import Proxy6API
 
 
 PROXY6 = 'PROXY6'
@@ -14,9 +14,12 @@ class ProxyManager:
         self.api = api_class(**api_params)
         self.last_fetched_ = None
 
-    def get_proxies_list(self):
-        self.last_fetched_ = list(self.api.get_ipv4_proxies())
+    def get_proxies_list(self, to_str=True):
+        self.last_fetched_ = list(self.api.get_ipv4_proxies(to_str=to_str))
         return self.last_fetched_
+
+    def get_random(self):
+        raise NotImplementedError
 
     @staticmethod
     def list_aval_apis():
@@ -31,6 +34,6 @@ if __name__ == '__main__':
     CONFIG_PATH = os.environ['CONFIG_PATH']
     with open(CONFIG_PATH, 'r') as f:
         config = json.load(f)
-    manager = ProxyManager(config['proxies'])
-    print(list(manager.get_proxies_list()))
+    manager = ProxyManager(config['proxy'])
+    print(list(manager.get_proxies_list(to_str=False)))
 
