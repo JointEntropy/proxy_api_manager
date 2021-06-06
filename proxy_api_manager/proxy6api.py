@@ -36,7 +36,7 @@ class Proxy6API:
 
         proxies_json = response.json()
         for proxy_info_entry in proxies_json['list'].values():
-            if not filter_entry(proxy_info_entry):
+            if filter_entry and not filter_entry(proxy_info_entry):
                 continue
             if to_str:
                 yield self.get_ip_string(proxy_info_entry)
@@ -46,6 +46,12 @@ class Proxy6API:
     @staticmethod
     def is_ipv4(proxy_info_entry):
         if proxy_info_entry['version'] == '4':
+            return True
+        return False
+
+    @staticmethod
+    def is_ipv4_or_shrd(proxy_info_entry):
+        if (proxy_info_entry['version'] == '4') or (proxy_info_entry['version'] == '3'):
             return True
         return False
 
@@ -73,5 +79,5 @@ if __name__ == '__main__':
     CONFIG_PATH = os.environ['CONFIG_PATH']
     with open(CONFIG_PATH, 'r') as f:
         config = json.load(f)
-    api = Proxy6API(**config['proxies']['api_settings'])
+    api = Proxy6API(**config['proxy']['api_settings'])
     print(list(api.get_proxies(filter_entry=api.is_ipv4)))
