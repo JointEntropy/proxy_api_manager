@@ -20,6 +20,9 @@ class Proxy6API:
     def get_ipv4_proxies(self, *args, **kwargs):
         return self.get_proxies(*args, filter_entry=self.is_ipv4,  **kwargs)
 
+    def get_ipv4_or_shared_proxies(self, *args, **kwargs):
+        return self.get_proxies(*args, filter_entry=self.is_ipv4_or_shrd,  **kwargs)
+
     def get_ipv6_proxies(self, *args, **kwargs):
         return self.get_proxies(*args, filter_entry=self.is_ipv6,  **kwargs)
 

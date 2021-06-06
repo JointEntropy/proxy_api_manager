@@ -15,7 +15,7 @@ class ProxyManager:
         self.last_fetched_ = None
 
     def get_proxies_list(self, to_str=True):
-        self.last_fetched_ = list(self.api.get_ipv4_proxies(to_str=to_str))
+        self.last_fetched_ = list(self.api.get_ipv4_or_shared_proxies(to_str=to_str))
         return self.last_fetched_
 
     def get_random(self):
